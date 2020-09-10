@@ -93,6 +93,12 @@ def viewcomp(request):
 def publiccompl(request):
     co=complaint.objects.all()
     return render(request,"viewpubliccomp.html",{'co':co})
+
+def contact(request):
+    co=Missing.objects.all()
+    return render(request,"viewmisscomp.html",{'co':co})
+
+
 ##############################################
 def upload(request):
     com=complaint_details.objects.all()
@@ -158,6 +164,10 @@ def missingstatus(request):
     comp=Missing.objects.all()
     return render(request,"missingstatus.html",{'fn':fn,'comp':comp})
 
+def crimemissing(request):
+    comp=Missing.objects.all()
+    return render(request,"crimemissingstatus.html",{'comp':comp})
+
 def AddMissing(request):
     Email= request.session['email']
     reg=register_form.objects.get(Email=Email)
@@ -178,15 +188,24 @@ def branchlogin(request):
             reg=branches.objects.get(bnname=bnname)
             fn=reg.bnname
             request.session['bnname']=bnname
-            return render(request,'policehome.html',{'meg':meg,'fn':fn})
+            return render(request,'policehome.html',{'meg':meg,'fn':fn,'comp':comp})
         else:
             print("password is not correct")
             meg="password is not correct..."
             return render(request,'Run_Here.html',{'meg':meg})   
     else:
-        print('Email is not there...')
+        print('Branch name is not there...')
         meg="Email is not there..."
         return render(request,'Run_Here.html',{'meg':meg})
+
+def finishh(request):
+    comp=Missing.objects.all()
+    idd = request.POST.get('idd')
+    fn = request.POST.get('fn')
+    coo=Missing.objects.get(id=idd)
+    coo.status ="finished"
+    coo.save();
+    return render(request,'policehome.html',{'fn':fn,'comp':comp})
 
 def chatpolice(request):
     bnname=request.session['bnname']
@@ -424,7 +443,8 @@ def Missing_details(request):
     reg=register_form.objects.get(Email=Email)
     pid=reg.id
     fn=reg.Name
-    reg = Missing(id=pid,firstname=firstname,lastname=lastname,Email=Email,perno=perno,missedarea=missedarea,my_content=my_content,image=image)
+    status="ongoing"
+    reg = Missing(id=pid,status=status,firstname=firstname,lastname=lastname,Email=Email,perno=perno,missedarea=missedarea,my_content=my_content,image=image)
     reg.save();
     meg="Missing complaint added "
     return render(request,'index.html',{'meg':meg,'fn':fn})

@@ -382,7 +382,7 @@ td, th {
     <section class="bg-theme position-relative" style="margin: auto">
         <div class="container-fluid px-0" >
             <div class="title-sec-w3layouts_pvt text-center">
-                <span class="title-wthree text-white">Missing List</span>
+                <span class="title-wthree text-white"> <a href="crimemissing">Missing List</a></span>
               
             </div>
            </div>
@@ -393,7 +393,7 @@ td, th {
                <table>
                   
                 {% for i in comp %}
-             
+                {% if i.status == "ongoing" %}
               <td>   <div style="width: 300px; height: 403px ; background-color: white">
                         <img  src="media/{{i.image}}" alt="Avatar" style="width:200px;height:200px; top: 0px; left: 0px;">
   <p style="text-align:center">{{i.firstname}} {{i.lastname}}</p>
@@ -404,10 +404,18 @@ td, th {
   
               
   <form action="contact" method="post">
-      
+      {% csrf_token %}
     
       <p><input type="submit" value="Contact"  style="  border: none; outline: 0; display: inline-block;  padding: 8px;  color: white;  background-color: #000;  text-align: center;  cursor: pointer;  width: 100%;  font-size: 18px;"></p>   
-  </form> {% endfor %}
+  </form> 
+  <form action="finishh" method="post">
+    {% csrf_token %}
+  <input type="hidden" value="{{i.id}}" name="idd">
+  <input type="hidden" value="{{fn}}" name={{fn}}>
+    <p><input type="submit" value="Completed"  style="  border: none; outline: 0; display: inline-block;  padding: 8px;  color: red;  background-color: #000;  text-align: center;  cursor: pointer;  width: 100%;  font-size: 18px;"></p>   
+</form>
+{% endif %}
+  {% endfor %}
                </table>
    
     </section>

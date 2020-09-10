@@ -40,6 +40,7 @@ class Missing(models.Model):
     firstname = models.CharField(max_length=100)
     lastname = models.CharField(max_length=100)
     perno = models.CharField(max_length=20)
+    status = models.CharField(max_length=50)
     missedarea = models.CharField(max_length=1000)
     my_content = models.CharField(max_length=2000)
     image = models.ImageField(upload_to="image")
